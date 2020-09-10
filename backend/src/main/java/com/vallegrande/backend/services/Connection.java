@@ -48,9 +48,13 @@ public class Connection {
             }
         };
 
-
         String responseBody = httpClient.execute(httpPost, responseHandler);
-
         return responseBody;
+    }
+
+    public static void main(String[] args) {
+        String nombre = "hello world mon";
+        String resultado = nombre.toUpperCase().charAt(0) + nombre.substring(1, nombre.length()).toLowerCase();
+        System.out.println("resultado : " + resultado );
     }
 }

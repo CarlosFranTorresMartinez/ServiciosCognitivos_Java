@@ -1,17 +1,24 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   Container,
   InputGroup,
   FormControl,
   Button,
+  Row,
+  Col
 } from "react-bootstrap";
 import axios from "axios";
 
-class Index extends Component {
-  state = {
-    text: [],
-    model_id: "",
-  };
+class Index extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      text: "",
+      model_id: "en-es",
+      translate: [],
+    };
+  }
 
   onChangetext = (e) => {
     this.setState({
@@ -24,16 +31,19 @@ class Index extends Component {
     await axios
       .post("http://localhost:8080/add", {
         text: [this.state.text],
-        model_id: "en-es",
+        model_id: this.state.model_id,
       })
       .then((response) => {
-        console.log(response.data);
+        this.setState({
+          text: this.state.text,
+          model_id: this.state.model_id,
+          translate: [...response.data.translations],
+        }); 
+        console.log(response.data.translations);
       })
       .catch(function (error) {
         console.log(error);
       });
-
-    this.setState({ text: [], model_id: "" });
   };
 
   render() {
@@ -54,6 +64,11 @@ class Index extends Component {
                 Traducir
               </Button>
             </InputGroup>
+            <Row>
+              {this.state.translate.map((data, index) => (
+                <Col key={index}>{data.translation}</Col>
+              ))}
+            </Row>
           </Container>
         </form>
       </div>

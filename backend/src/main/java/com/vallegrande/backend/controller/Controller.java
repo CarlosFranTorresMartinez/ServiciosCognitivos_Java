@@ -17,14 +17,17 @@ public class Controller {
 
     @PostMapping("/add")
     public String save(@RequestBody Model model) throws IOException {
+
+        String text = model.getText().get(0).toUpperCase().charAt(0) + model.getText().get(0).substring(1, model.getText().get(0).length()).toLowerCase();
+
         String json = "{\n" +
                 "    \"text\": [\n" +
-                "        \"" + model.getText() + "\"\n" +
+                "        \"" + text + "\"\n" +
                 "    ],\n" +
-                "    \"model_id\": \"" + model.getModel_id() + "\"\n" +
+                "    \"model_id\": \"en-es\"\n" +
                 "}";
 
-        String a = conectar.services(json);
-        return a;
+        System.out.println(json);
+        return conectar.services(json);
     }
 }
