@@ -5,11 +5,12 @@ import {
   FormControl,
   Button,
   Row,
-  Col
+  Col,
 } from "react-bootstrap";
-import axios from "axios";
 
-class Index extends React.Component {
+import TranslatorServices from "../../services/TranslatorServices";
+
+class Translate extends React.Component {
   constructor(props) {
     super(props);
 
@@ -27,18 +28,19 @@ class Index extends React.Component {
   };
 
   onSubmit = async (e) => {
+    var data = {
+      text: [this.state.text],
+      model_id: this.state.model_id,
+    };
+
     e.preventDefault();
-    await axios
-      .post("http://localhost:8080/add", {
-        text: [this.state.text],
-        model_id: this.state.model_id,
-      })
+    await TranslatorServices.post(data)
       .then((response) => {
         this.setState({
           text: this.state.text,
           model_id: this.state.model_id,
           translate: [...response.data.translations],
-        }); 
+        });
         console.log(response.data.translations);
       })
       .catch(function (error) {
@@ -76,4 +78,4 @@ class Index extends React.Component {
   }
 }
 
-export default Index;
+export default Translate;
